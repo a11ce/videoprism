@@ -7,9 +7,9 @@ from tqdm import tqdm
 
 def main():
     #TODO: arg this
-    path = "videos/img2.mov"
+    path = "videos/cat.mp4"
     videoPrism = loadVideo(path)
-    projectionSlice(videoPrism,0.1,0.1,0.1)
+    projectionSlice(videoPrism,-0.1,0.1,0.6)
 
 def loadVideo(videoPath):
     firstFrame = True
@@ -23,8 +23,7 @@ def loadVideo(videoPath):
         except imageio.core.CannotReadFrameError:
             break
         else:
-            frameNP = np.asarray(frame)
-            framesArr.append(frameNP)
+            framesArr.append(np.asarray(frame))
             
     #print(framesArr)
     prism = np.stack(framesArr,axis = 0)
@@ -45,10 +44,10 @@ def projectionSlice(videoPrism, xc,yc,c):
                 #print("out of bounds")
                 continue
     
-    projection = projection.astype(np.uint8)
+    #projection = projection.astype(np.uint8)
     #print(projection.shape)
     #print(projection[100,10])
-    img = Image.fromarray(projection,'RGB')
+    img = Image.fromarray(projection.astype(np.uint8),'RGB')
     img.show()
     
 def map( x,  in_min,  in_max,  out_min,  out_max):
