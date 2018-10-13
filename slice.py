@@ -13,8 +13,8 @@ def main():
     #TODO: arg this
     path = "videos/" + FILENAME
     videoPrism = loadVideo(path)
-    img = projectionSlice(videoPrism,XC,YC,C)
-    saveImage(img, XC,YC,C, FILENAME)
+
+    randomProjectionSlice(videoPrism,FILENAME,20)
 
 def loadVideo(videoPath):
     firstFrame = True
@@ -58,6 +58,14 @@ def projectionSlice(videoPrism, xc,yc,c):
 def saveImage(img,xc,yc,c,fileName):
     img.save("output/" + str(fileName) +  str(xc) + str(yc) + str(c) + ".png" )
 
+def randomProjectionSlice(videoPrism,fileName, num):
+    for _ in tqdm(range(num)):
+        xc = np.random.uniform(-1.5,1.5)
+        yc = np.random.uniform(-1.5,1.5)
+        c  = np.random.uniform(0.25,0.75)
+        img = projectionSlice(videoPrism, xc, yc, c)
+        saveImage(img,xc,yc,c,fileName)
+        
 
 def map( x,  in_min,  in_max,  out_min,  out_max):
     return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
