@@ -6,10 +6,15 @@ from PIL import Image
 from tqdm import tqdm
 
 def main():
+    XC = -0.1
+    YC = 0.1
+    C  = 0.6
+    FILENAME = "cat.mp4"
     #TODO: arg this
-    path = "videos/cat.mp4"
+    path = "videos/" + FILENAME
     videoPrism = loadVideo(path)
-    projectionSlice(videoPrism,-0.1,0.1,0.6)
+    img = projectionSlice(videoPrism,XC,YC,C)
+    saveImage(img, XC,YC,C, FILENAME)
 
 def loadVideo(videoPath):
     firstFrame = True
@@ -48,8 +53,12 @@ def projectionSlice(videoPrism, xc,yc,c):
     #print(projection.shape)
     #print(projection[100,10])
     img = Image.fromarray(projection.astype(np.uint8),'RGB')
-    img.show()
-    
+    return img
+
+def saveImage(img,xc,yc,c,fileName):
+    img.save("output/" + str(fileName) +  str(xc) + str(yc) + str(c) + ".png" )
+
+
 def map( x,  in_min,  in_max,  out_min,  out_max):
     return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
 
