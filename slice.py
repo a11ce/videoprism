@@ -9,7 +9,7 @@ def main():
     XC = -0.1
     YC = 0.1
     C  = 0.6
-    FILENAME = "pan.mp4"
+    FILENAME = "steady.mp4"
     #TODO: arg this
     path = "videos/" + FILENAME
     videoPrism = loadVideo(path)
@@ -54,6 +54,8 @@ def projectionSlice(videoPrism, xc,yc,c):
     #print(projection.shape)
     #print(projection[100,10])
     img = Image.fromarray(projection.astype(np.uint8),'RGB')
+    img = img.transpose(Image.ROTATE_270)
+    img = img.transpose(Image.FLIP_LEFT_RIGHT)
     return img
 
 def saveImage(img,xc,yc,c,fileName):
