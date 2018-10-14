@@ -9,7 +9,7 @@ def main():
     XC = -0.1
     YC = 0.1
     C  = 0.6
-    FILENAME = "img2.mov"
+    FILENAME = "pan.mp4"
     #TODO: arg this
     path = "videos/" + FILENAME
     videoPrism = loadVideo(path)
@@ -61,15 +61,15 @@ def saveImage(img,xc,yc,c,fileName):
 
 def randomProjectionSlice(videoPrism,fileName, num):
     nFrames = videoPrism.shape[0]
-    width = videoPrism.shape[2]
-    upBound = (nFrames / (width*4))
+    sideLength = (videoPrism.shape[1] + videoPrism.shape[2])/2
+    upBound = (nFrames / (sideLength*4))
     lowBound = -1 * upBound
     print("bound is " + str(upBound))
     
     for _ in tqdm(range(num), desc = "Random projections"):
         xc = np.random.uniform(lowBound,upBound)
         yc = np.random.uniform(lowBound,upBound)
-        c  = np.random.uniform(0.25,0.75)
+        c  = np.random.uniform((upBound/4),(1-(upBound/4)))
         img = projectionSlice(videoPrism, xc, yc, c)
         saveImage(img,xc,yc,c,fileName)
         
