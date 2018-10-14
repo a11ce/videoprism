@@ -4,12 +4,13 @@ import imageio
 import numpy as np
 from PIL import Image
 from tqdm import tqdm
+import os
 
 def main():
     XC = -0.1
     YC = 0.1
     C  = 0.6
-    FILENAME = "steady.mp4"
+    FILENAME = "cat.mp4"
     #TODO: arg this
     path = "videos/" + FILENAME
     videoPrism = loadVideo(path)
@@ -59,7 +60,9 @@ def projectionSlice(videoPrism, xc,yc,c):
     return img
 
 def saveImage(img,xc,yc,c,fileName):
-    img.save("output/" + str(fileName) +  str(xc) + str(yc) + str(c) + ".png" )
+    folder = ("output/" + fileName + "/")
+    os.makedirs(folder, exist_ok=True)
+    img.save(folder  + str(fileName) +  str(xc) + str(yc) + str(c) + ".png" )
 
 def randomProjectionSlice(videoPrism,fileName, num):
     nFrames = videoPrism.shape[0]
