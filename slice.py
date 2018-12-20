@@ -15,7 +15,7 @@ def main():
     path = "videos/" + FILENAME
     videoPrism = loadVideo(path)
 
-    randomProjectionSlice(videoPrism,FILENAME,100)
+    randomProjectionSlice(videoPrism,path,100, "output/")
 
 def loadVideo(videoPath):
     firstFrame = True
@@ -59,12 +59,14 @@ def projectionSlice(videoPrism, xc,yc,c):
     img = img.transpose(Image.FLIP_LEFT_RIGHT)
     return img
 
-def saveImage(img,xc,yc,c,fileName):
-    folder = ("output/" + fileName + "/")
+def saveImage(img,xc,yc,c,fileName,outputDir):
+    endOfName = fileName.split("/")[-1]
+    print("end of name is " +endOfName)
+    folder = (outputDir + endOfName + "/")
     os.makedirs(folder, exist_ok=True)
-    img.save(folder  + str(fileName) +  str(xc) + str(yc) + str(c) + ".png" )
+    img.save(folder  + str(endOfName) +  str(xc) + str(yc) + str(c) + ".png" )
 
-def randomProjectionSlice(videoPrism,fileName, num):
+def randomProjectionSlice(videoPrism,fileName, num, outputDir):
     nFrames = videoPrism.shape[0]
     sideLength = (videoPrism.shape[1] + videoPrism.shape[2])/2
     upBound = (nFrames / (sideLength*4))
@@ -76,7 +78,7 @@ def randomProjectionSlice(videoPrism,fileName, num):
         yc = np.random.uniform(lowBound,upBound)
         c  = np.random.uniform((upBound/4),(1-(upBound/4)))
         img = projectionSlice(videoPrism, xc, yc, c)
-        saveImage(img,xc,yc,c,fileName)
+        saveImage(img,xc,yc,c,fileName,outputDir)
         
 
 def map( x,  in_min,  in_max,  out_min,  out_max):
