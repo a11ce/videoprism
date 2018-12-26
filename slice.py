@@ -61,10 +61,10 @@ def projectionSlice(videoPrism, xc,yc,c):
 
 def saveImage(img,xc,yc,c,fileName,outputDir):
     endOfName = fileName.split("/")[-1]
-    print("end of name is " +endOfName)
+    #print("end of name is " +endOfName)
     folder = (outputDir + endOfName + "/")
     os.makedirs(folder, exist_ok=True)
-    img.save(folder  + str(endOfName) +  str(xc) + str(yc) + str(c) + ".png" )
+    img.save(folder  + str(endOfName) +"."+  str(xc) +"."+str(yc) + "."+str(c) + ".png" )
 
 def randomProjectionSlice(videoPrism,fileName, num, outputDir):
     nFrames = videoPrism.shape[0]
