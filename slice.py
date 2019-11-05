@@ -15,25 +15,17 @@ def main():
     #TODO: arg this
     path = "videos/" + FILENAME
     videoPrism = loadVideo(path)
-
     randomProjectionSlice(videoPrism, path, 100, "output/")
 
 
 def loadVideo(videoPath):
-    firstFrame = True
+    """
+    Loads a video located at videoPath and returns it as a numpy array with
+    shape (nFrames, height, width, 3). The 3 is for RGB and each pixel is
+    treated atomically, so the prism is effectively a 3D array of pixels.
+    """
     reader = imageio.get_reader(videoPath)
-    nFrames = reader.get_meta_data()['nframes']
-    framesArr = []
-    for _ in tqdm(range(nFrames), desc="Loading video (frames)"):
-        try:
-            frame = reader.get_next_data()
-        #This occurs at the end of the file
-        except imageio.core.CannotReadFrameError:
-            break
-        else:
-            framesArr.append(np.asarray(frame))
-
-    #print(framesArr)
+    framesArr = [np.asarray(frame) for idx, frame in enumerate(reader)]
     prism = np.stack(framesArr, axis=0)
     return prism
 
