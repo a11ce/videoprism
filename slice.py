@@ -31,24 +31,33 @@ def loadVideo(videoPath):
 
 
 def projectionSlice(videoPrism, xc, yc, c):
+    """
+    Gets a top-down-view specified slice of a videoPrism. xc and yc are the 
+    x and y slope coefficients, and c is the (constant) starting height. 
+    c is in the range [0,1.0], scaled to the height (aka number of frames).
+    """
+
+    # scale c to the video height
     c = int(c * videoPrism.shape[0])
-    #c = int(map(c,0.0,1.0,0,videoPrism.shape[0]))
-    #print(videoPrism.shape)
-    #print(c)
+
+    # begin with a 2D array of black pixels the size of one frame
     projection = np.zeros(shape=(videoPrism.shape[2], videoPrism.shape[1], 3))
+
+    # loop through x and y in the frame
     for x in tqdm(range(videoPrism.shape[2]), desc="Slicing video (x)"):
         for y in range(videoPrism.shape[1]):
+            # calculate z (height) according to the slopes and offset
             z = int((xc * x) + (yc * y) + c)
-            #print(z)
             try:
+                # copy the pixel at the correct location to the output image
                 projection[x, y] = videoPrism[z, y, x]
-            except:
-                #print("out of bounds")
+            except IndexError:
+                # if the point would be above or below the prism,
+                # just leave it black
                 continue
 
-    #projection = projection.astype(np.uint8)
-    #print(projection.shape)
-    #print(projection[100,10])
+    # create an image from the array of pixels and do some transformations
+    # so the image is correctly displayed
     img = Image.fromarray(projection.astype(np.uint8), 'RGB')
     img = img.transpose(Image.ROTATE_270)
     img = img.transpose(Image.FLIP_LEFT_RIGHT)
