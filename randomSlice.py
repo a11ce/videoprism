@@ -11,9 +11,8 @@ def main():
                         type=str,
                         help="relative path to output directory",
                         required=False,
-                        default="")
+                        default="output/")
     args = parser.parse_args()
-    print(args.path)
 
     videoPrism = slice.loadVideo(args.path)
     slice.randomProjectionSlice(videoPrism, args.path, 100, args.output)
