@@ -65,11 +65,22 @@ def projectionSlice(videoPrism, xc, yc, c):
 
 
 def saveImage(img, xc, yc, c, fileName, outputDir):
+    """
+    Write the img to:
+    outputDir/videoName/videoName_xc_yx_c.png
+    For example:
+    output/cat.mp4/cat.mp4_-1_1_0.5.png
+
+    A videoName folder inside outputDir is used so that multiple runs on the
+    same source video are easily grouped together. Slice information is saved
+    within the filename so that the user can explore slices near any 
+    interesting random/previous ones.
+    """
+
     endOfName = fileName.split("/")[-1]
-    #print("end of name is " +endOfName)
     folder = (outputDir + endOfName + "/")
     os.makedirs(folder, exist_ok=True)
-    img.save(folder + str(endOfName) + "." + str(xc) + "." + str(yc) + "." +
+    img.save(folder + str(endOfName) + "_" + str(xc) + "_" + str(yc) + "_" +
              str(c) + ".png")
 
 
