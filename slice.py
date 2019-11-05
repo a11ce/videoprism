@@ -1,5 +1,3 @@
-# Outputs the image produced by slicing through the prism with an arbitary plane
-
 import imageio
 import numpy as np
 from PIL import Image
