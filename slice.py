@@ -76,7 +76,6 @@ def saveImage(img, xc, yc, c, fileName, outputDir):
     within the filename so that the user can explore slices near any 
     interesting random/previous ones.
     """
-
     endOfName = fileName.split("/")[-1]
     folder = (outputDir + endOfName + "/")
     os.makedirs(folder, exist_ok=True)
@@ -85,8 +84,16 @@ def saveImage(img, xc, yc, c, fileName, outputDir):
 
 
 def randomProjectionSlice(videoPrism, fileName, num, outputDir):
+    """
+    Generates and saves num random slices using the given prism.
+    fileName and outputDir are passed on to saveImage.
+    """
+
     nFrames = videoPrism.shape[0]
     sideLength = (videoPrism.shape[1] + videoPrism.shape[2]) / 2
+
+    # the upper and lower bounds for xc and yc are derived from the number of
+    # frames and the average side length
     upBound = (nFrames / (sideLength * 4))
     lowBound = -1 * upBound
     print("bound is " + str(upBound))
@@ -94,6 +101,8 @@ def randomProjectionSlice(videoPrism, fileName, num, outputDir):
     for _ in tqdm(range(num), desc="Random projections"):
         xc = np.random.uniform(lowBound, upBound)
         yc = np.random.uniform(lowBound, upBound)
+
+        # c is between 25% and 75% of the upper bound
         c = np.random.uniform((upBound / 4), (1 - (upBound / 4)))
         img = projectionSlice(videoPrism, xc, yc, c)
         saveImage(img, xc, yc, c, fileName, outputDir)
